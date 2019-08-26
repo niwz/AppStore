@@ -11,14 +11,27 @@ import Stevia
 
 class TodayCell: UICollectionViewCell {
 
-    let imageView = UIImageView(image: UIImage(named: "garden"))
+    var todayItem: TodayItem! {
+        didSet {
+            categoryLabel.text = todayItem.category
+            titleLabel.text = todayItem.title
+            imageContainerView.image = todayItem.image
+            descriptionLabel.text = todayItem.description
+        }
+    }
+    let categoryLabel = UILabel(text: "LIFE HACK", font: .boldSystemFont(ofSize: 20))
+    let titleLabel = UILabel(text: "Utilizing your Time", font: .boldSystemFont(ofSize: 28))
+    let imageContainerView = TodayImageContainerView()
+    let descriptionLabel = UILabel(text: "All the tools and apps you need to intelligently organize your life the right way.", font: .systemFont(ofSize: 16), numberOfLines: 3)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
+        clipsToBounds = true
         layer.cornerRadius = 16
-        sv(imageView)
-        imageView.centerInContainer().size(250)
+        let stackView = VStack(arrangedSubviews: [categoryLabel, titleLabel, imageContainerView, descriptionLabel], spacing: 8)
+        sv(stackView)
+        stackView.fillContainer(24)
     }
 
     required init?(coder aDecoder: NSCoder) {

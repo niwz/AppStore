@@ -14,6 +14,8 @@ class TodayController: BaseListController, UICollectionViewDelegateFlowLayout{
     let cellId = "CellID"
     var startingFrame: CGRect?
     var fullscreenController: AppFullscreenController!
+    let items = [TodayItem(category: "LIFE HACK", title: "Utilizing your Time", image: #imageLiteral(resourceName: "garden"), description: "All the tools and apps you need to intelligently organize your life the right way.", backgroundColor: .white),
+                 TodayItem(category: "HOLIDAYS", title: "Travel on a Budget", image: #imageLiteral(resourceName: "holiday"), description: "Find out all you need to know about how to travel without packing everything!", backgroundColor: .yellow)]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,11 +25,12 @@ class TodayController: BaseListController, UICollectionViewDelegateFlowLayout{
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return items.count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! TodayCell
+        cell.todayItem = items[indexPath.item]
         return cell
     }
 
@@ -46,11 +49,11 @@ class TodayController: BaseListController, UICollectionViewDelegateFlowLayout{
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let fullscreenController = AppFullscreenController()
         self.fullscreenController = fullscreenController
+        fullscreenController.todayItem = items[indexPath.item]
         fullscreenController.dismissHandler = { self.handleDismissPopupView() }
         addChild(fullscreenController)
         let fullscreenView = fullscreenController.view!
         view.sv(fullscreenView)
-//        fullscreenView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleDismissPopupView)))
         guard let cell = collectionView.cellForItem(at: indexPath) else { return }
         guard let startingFrame = cell.superview?.convert(cell.frame, to: nil) else { return }
         self.startingFrame = startingFrame

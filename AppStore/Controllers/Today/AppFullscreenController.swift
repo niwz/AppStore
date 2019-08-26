@@ -11,6 +11,8 @@ import Stevia
 
 class AppFullscreenController: UIViewController {
 
+    var todayItem: TodayItem?
+
     let tableView = UITableView()
     let closeButton: UIButton = {
         let btn = UIButton()
@@ -53,12 +55,13 @@ extension AppFullscreenController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: UITableViewCell
         if indexPath.row == 0 {
-            cell = AppFullscreenHeaderCell()
-        } else {
-            cell = AppFullscreenDescriptionCell()
+            let cell = AppFullscreenHeaderCell()
+            cell.todayCell.todayItem = todayItem
+            cell.selectionStyle = .none
+            return cell
         }
+        let cell = AppFullscreenDescriptionCell()
         cell.selectionStyle = .none
         return cell
     }
@@ -66,6 +69,9 @@ extension AppFullscreenController: UITableViewDataSource {
 
 extension AppFullscreenController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 450
+        if indexPath.row == 0 {
+            return 450
+        }
+        return UITableView.automaticDimension
     }
 }

@@ -16,7 +16,7 @@ class AppFullscreenHeaderCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         sv(todayCell)
-        todayCell.centerInContainer().size(250)
+        todayCell.fillContainer()
     }
 
     required init?(coder aDecoder: NSCoder) {
