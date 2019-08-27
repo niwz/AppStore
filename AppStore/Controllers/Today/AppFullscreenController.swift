@@ -33,8 +33,11 @@ class AppFullscreenController: UIViewController {
         view.backgroundColor = .white
         view.sv(tableView, closeButton)
         tableView.fillContainer()
+        tableView.contentInsetAdjustmentBehavior = .never
+        let height = UIApplication.shared.statusBarFrame.height
+        tableView.contentInset = .init(top: 0, left: 0, bottom: height, right: 0)
         closeButton.right(0).width(80).height(40)
-        closeButton.Top == view.safeAreaLayoutGuide.Top + 12
+        closeButton.Top == view.safeAreaLayoutGuide.Top + 24
     }
 
     func setupTableView() {
@@ -58,6 +61,7 @@ extension AppFullscreenController: UITableViewDataSource {
         if indexPath.row == 0 {
             let cell = AppFullscreenHeaderCell()
             cell.todayCell.todayItem = todayItem
+            cell.todayCell.layer.cornerRadius = 0
             cell.selectionStyle = .none
             return cell
         }
@@ -70,7 +74,7 @@ extension AppFullscreenController: UITableViewDataSource {
 extension AppFullscreenController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
-            return 450
+            return TodayController.cellHeight
         }
         return UITableView.automaticDimension
     }

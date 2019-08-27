@@ -9,16 +9,20 @@
 import UIKit
 import Stevia
 
-class TodayCell: UICollectionViewCell {
+class TodayCell: BaseTodayCell {
 
-    var todayItem: TodayItem! {
+    override var todayItem: TodayItem! {
         didSet {
             categoryLabel.text = todayItem.category
             titleLabel.text = todayItem.title
             imageContainerView.image = todayItem.image
             descriptionLabel.text = todayItem.description
+            backgroundColor = todayItem.backgroundColor
         }
     }
+
+    var stackViewTopConstraint: NSLayoutConstraint!
+
     let categoryLabel = UILabel(text: "LIFE HACK", font: .boldSystemFont(ofSize: 20))
     let titleLabel = UILabel(text: "Utilizing your Time", font: .boldSystemFont(ofSize: 28))
     let imageContainerView = TodayImageContainerView()
@@ -32,6 +36,7 @@ class TodayCell: UICollectionViewCell {
         let stackView = VStack(arrangedSubviews: [categoryLabel, titleLabel, imageContainerView, descriptionLabel], spacing: 8)
         sv(stackView)
         stackView.fillContainer(24)
+        stackViewTopConstraint = stackView.topConstraint
     }
 
     required init?(coder aDecoder: NSCoder) {
