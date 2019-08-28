@@ -27,6 +27,12 @@ class MultipleAppCell: UICollectionViewCell {
 
     let getButton = UIButton(title: "GET")
 
+    let separatorView: UIView = {
+        let sv = UIView()
+        sv.backgroundColor = UIColor(white: 0.3, alpha: 0.3)
+        return sv
+    }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         imageView.backgroundColor = .purple
@@ -42,8 +48,9 @@ class MultipleAppCell: UICollectionViewCell {
         let stackView = UIStackView(arrangedSubviews: [imageView, labelsStackView, getButton])
         stackView.alignment = .center
         stackView.spacing = 16
-        sv(stackView)
+        sv(stackView, separatorView)
         stackView.fillContainer()
+        separatorView.left(0).right(0).bottom(-8).height(0.5)
     }
 
     required init?(coder aDecoder: NSCoder) {

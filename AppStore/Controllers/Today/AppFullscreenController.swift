@@ -62,6 +62,7 @@ extension AppFullscreenController: UITableViewDataSource {
             let cell = AppFullscreenHeaderCell()
             cell.todayCell.todayItem = todayItem
             cell.todayCell.layer.cornerRadius = 0
+            cell.clipsToBounds = true
             cell.selectionStyle = .none
             return cell
         }

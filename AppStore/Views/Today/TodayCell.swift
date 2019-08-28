@@ -17,7 +17,7 @@ class TodayCell: BaseTodayCell {
             titleLabel.text = todayItem.title
             imageContainerView.image = todayItem.image
             descriptionLabel.text = todayItem.description
-            backgroundColor = todayItem.backgroundColor
+            backgroundView?.backgroundColor = todayItem.backgroundColor
         }
     }
 
@@ -30,8 +30,8 @@ class TodayCell: BaseTodayCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
-        clipsToBounds = true
+        backgroundView?.backgroundColor = .white
+        imageContainerView.clipsToBounds = true
         layer.cornerRadius = 16
         let stackView = VStack(arrangedSubviews: [categoryLabel, titleLabel, imageContainerView, descriptionLabel], spacing: 8)
         sv(stackView)
