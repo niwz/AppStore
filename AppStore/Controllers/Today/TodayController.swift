@@ -21,6 +21,11 @@ class TodayController: BaseListController, UICollectionViewDelegateFlowLayout{
         return aiv
     }()
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.superview?.setNeedsLayout()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.sv(activityIndicatorView)
@@ -55,8 +60,8 @@ class TodayController: BaseListController, UICollectionViewDelegateFlowLayout{
             self.items = [
                 TodayItem.init(category: "LIFE HACK", title: "Utilizing your Time", image: #imageLiteral(resourceName: "garden"), description: "All the tools and apps you need to intelligently organize your life the right way.", backgroundColor: .white, cellType: .single, apps: []),
                 TodayItem.init(category: "Daily List", title: topGrossingGroup?.feed.title ?? "", image: #imageLiteral(resourceName: "garden"), description: "", backgroundColor: .white, cellType: .multiple, apps: topGrossingGroup?.feed.results ?? []),
-                TodayItem.init(category: "Daily List", title: gamesGroup?.feed.title ?? "", image: #imageLiteral(resourceName: "garden"), description: "", backgroundColor: .white, cellType: .multiple, apps: gamesGroup?.feed.results ?? []),
-                TodayItem.init(category: "HOLIDAYS", title: "Travel on a Budget", image: #imageLiteral(resourceName: "holiday"), description: "Find out all you need to know on how to travel without packing everything!", backgroundColor: #colorLiteral(red: 0.9838578105, green: 0.9588007331, blue: 0.7274674177, alpha: 1), cellType: .single, apps: [])]
+                TodayItem.init(category: "HOLIDAYS", title: "Travel on a Budget", image: #imageLiteral(resourceName: "holiday"), description: "Find out all you need to know on how to travel without packing everything!", backgroundColor: #colorLiteral(red: 0.9838578105, green: 0.9588007331, blue: 0.7274674177, alpha: 1), cellType: .single, apps: []),
+                TodayItem.init(category: "Daily List", title: gamesGroup?.feed.title ?? "", image: #imageLiteral(resourceName: "garden"), description: "", backgroundColor: .white, cellType: .multiple, apps: gamesGroup?.feed.results ?? [])]
             self.collectionView.reloadData()
 
         }
@@ -74,8 +79,28 @@ class TodayController: BaseListController, UICollectionViewDelegateFlowLayout{
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
         if let cell = cell as? BaseTodayCell {
             cell.todayItem = items[indexPath.item]
-        } 
+        }
+
+        (cell as? TodayMultipleCell)?.multipleAppsController.collectionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleMultipleAppsTap)))
+
         return cell
+    }
+
+    @objc private func handleMultipleAppsTap(gesture: UIGestureRecognizer) {
+        let collectionView = gesture.view
+        var superview = collectionView?.superview
+        while superview != nil {
+            if let cell = superview as? TodayMultipleCell {
+                guard let indexPath = self.collectionView.indexPath(for: cell) else { return }
+                let apps = self.items[indexPath.item].apps
+                let fullController = TodayMultipleController(mode: .fullscreen)
+                fullController.apps = apps
+                present(fullController, animated: true)
+                return
+            }
+            superview = superview?.superview
+
+        }
     }
 
     static let cellHeight: CGFloat = 500
@@ -93,6 +118,13 @@ class TodayController: BaseListController, UICollectionViewDelegateFlowLayout{
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+        if items[indexPath.item].cellType == .multiple {
+            let fullController = TodayMultipleController(mode: .fullscreen)
+            fullController.apps = items[indexPath.item].apps
+            present(BackEnabledNavigationController(rootViewController: fullController), animated: true)
+            return
+        }
 
         let fullscreenController = AppFullscreenController()
         self.fullscreenController = fullscreenController
@@ -131,6 +163,7 @@ class TodayController: BaseListController, UICollectionViewDelegateFlowLayout{
 
     func handleDismissPopupView() {
         UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.7, options: .curveEaseIn, animations: {
+            self.fullscreenController.closeButton.alpha = 0
             self.fullscreenController.tableView.contentOffset = .zero
             guard let startingFrame = self.startingFrame else { return }
             self.fullscreenController.view.topConstraint?.constant = startingFrame.origin.y
