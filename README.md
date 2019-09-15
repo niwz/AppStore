@@ -2,10 +2,10 @@
 
 This project is a replica of the App Store iOS app using UIKit and Apple's public iTunes API.
 
-![Custom cell animations](demo/cell_animation.gif)
+Custom Animations | Live Feeds
+:-------------------------:|:-------------------------:
+![](demo/cell_animation.gif) | ![](demo/fullscreen_controller.gif)
 
-![fullscreen_controller](demo/fullscreen_controller.gif)
-
-![apps_page_ui](demo/apps_page_ui.gif)
-
-![search_demo](demo/search_demo.gif)
+Apps CollectionView | Search Functionality
+:-------------------------:|:-------------------------:
+![](demo/apps_page_ui.gif) | ![](demo/search_demo.gif)
