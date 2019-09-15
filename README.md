@@ -6,6 +6,6 @@ Custom Animations | Live Feeds
 :-------------------------:|:-------------------------:
 ![](demo/cell_animation.gif) | ![](demo/fullscreen_controller.gif)
 
-Apps CollectionView | Search Functionality
+Custom CollectionViews | Search Functionality
 :-------------------------:|:-------------------------:
 ![](demo/apps_page_ui.gif) | ![](demo/search_demo.gif)
